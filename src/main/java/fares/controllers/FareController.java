@@ -14,33 +14,32 @@ import fares.dtos.FareDto;
 import fares.model.Fare;
 import fares.repositories.FareRepository;
 import fares.services.FareService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/fares")
 public class FareController {
 
 	@Autowired
-	private FareRepository fareRepository;
-	@Autowired
 	private FareService fareService;
 	
 	@PostMapping
-	public ResponseEntity<Fare> create(@RequestBody FareDto dto) {
-		return fareService.save(dto);
+	public ResponseEntity<Fare> create(HttpServletRequest request, @RequestBody FareDto dto) {
+		return fareService.save(request, dto);
 	}
 	
 	@GetMapping("/currentStandardPrice")
-	public ResponseEntity<Double> getCurrentStandardPrice() {
-		return fareService.getCurrentStandardPrice();
+	public ResponseEntity<Double> getCurrentStandardPrice(HttpServletRequest request) {
+		return fareService.getCurrentStandardPrice(request);
 	}
 	
 	@GetMapping("/currentExtendedPausePrice")
-	public ResponseEntity<Double> getCurrentExtendedPausePrice() {
-		return fareService.getCurrentExtendedPausePrice();
+	public ResponseEntity<Double> getCurrentExtendedPausePrice(HttpServletRequest request) {
+		return fareService.getCurrentExtendedPausePrice(request);
 	}
     
     @GetMapping
-    public List<Fare> findAll() {
-    	return fareRepository.findAll();
+    public ResponseEntity<List<Fare>> findAll(HttpServletRequest request) {
+		return fareService.findAll(request);
     }
 }
