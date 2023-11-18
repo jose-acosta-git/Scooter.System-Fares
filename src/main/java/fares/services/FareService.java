@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class FareService {
 	private FareRepository fareRepository;
 	@Autowired
 	private AuthService authService;
+	@Autowired
+	MongoTemplate mongoTemplate;
 
 	public ResponseEntity<Fare> save(HttpServletRequest request, FareDto dto) {
 		String token = authService.getTokenFromRequest(request);
@@ -48,7 +51,7 @@ public class FareService {
 		}
 
 	    LocalDate today = LocalDate.now();
-	    Optional<Double> currentStandardPriceOptional = fareRepository.findCurrentStandardPrice(today);
+	    Optional<Double> currentStandardPriceOptional = fareRepository.findCurrentStandardPrice(today, mongoTemplate);
 	    if (currentStandardPriceOptional.isPresent()) {
 	    	return ResponseEntity.ok(currentStandardPriceOptional.get());
 	    }
@@ -62,7 +65,7 @@ public class FareService {
 		}
 
 	    LocalDate today = LocalDate.now();
-	    Optional<Double> currentExtendedPausePriceOptional = fareRepository.findCurrentExtendedPausePrice(today);
+	    Optional<Double> currentExtendedPausePriceOptional = fareRepository.findCurrentExtendedPausePrice(today, mongoTemplate);
 	    if (currentExtendedPausePriceOptional.isPresent()) {
 	    	return ResponseEntity.ok(currentExtendedPausePriceOptional.get());
 	    }
