@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fares.dtos.FareDto;
 import fares.model.Fare;
-import fares.repositories.FareRepository;
 import fares.services.FareService;
 import jakarta.servlet.http.HttpServletRequest;
 
